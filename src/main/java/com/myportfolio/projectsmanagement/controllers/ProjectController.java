@@ -3,6 +3,7 @@ package com.myportfolio.projectsmanagement.controllers;
 import com.myportfolio.projectsmanagement.domain.ProjectDomain;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectGetDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
+import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
 import com.myportfolio.projectsmanagement.services.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ProjectSaveDTO projectDTO) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ProjectUpdateDTO projectDTO) {
         this.projectService.updateProject(id, projectDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
