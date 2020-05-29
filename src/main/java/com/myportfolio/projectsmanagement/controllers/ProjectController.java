@@ -11,9 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/projects")
@@ -43,7 +42,7 @@ public class ProjectController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> store(@RequestBody ProjectSaveDTO projectDTO) {
+    public ResponseEntity<Void> store(@Valid @RequestBody ProjectSaveDTO projectDTO) {
         ProjectDomain projectDomain = this.projectService.createNewProject(projectDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
