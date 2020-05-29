@@ -5,9 +5,10 @@ import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
 import com.myportfolio.projectsmanagement.repositories.ProjectRepository;
 import com.myportfolio.projectsmanagement.services.exceptions.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProjectService {
@@ -18,8 +19,8 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public List<ProjectDomain> getProjects() {
-        return this.projectRepository.findAll();
+    public Page<ProjectDomain> getProjects(Integer page, Integer size, String direction, String orderBy) {
+        return this.projectRepository.findAll(PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy));
     }
 
     public ProjectDomain getOneProject(Long id) {

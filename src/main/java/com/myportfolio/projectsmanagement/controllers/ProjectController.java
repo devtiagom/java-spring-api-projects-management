@@ -5,6 +5,7 @@ import com.myportfolio.projectsmanagement.dtos.projects.ProjectGetDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
 import com.myportfolio.projectsmanagement.services.ProjectService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,13 @@ public class ProjectController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<ProjectGetDTO>> index() {
-        List<ProjectGetDTO> projectsDTO = this.projectService.getProjects().stream().map(ProjectGetDTO::new).collect(Collectors.toList());
+    public ResponseEntity<Page<ProjectGetDTO>> index(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "24") Integer size,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
+    ) {
+        Page<ProjectGetDTO> projectsDTO = this.projectService.getProjects(page, size, direction, orderBy).map(ProjectGetDTO::new);
         return ResponseEntity.status(HttpStatus.OK).body(projectsDTO);
     }
 
