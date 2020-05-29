@@ -27,7 +27,7 @@ public class ProjectService {
                 .findById(id)
                 .orElseThrow(() -> {
                     return new ObjectNotFoundException(
-                            "Objeto Não encontrado! Id: " + id + "Tipo: " + ProjectDomain.class.getName()
+                            "Objeto Não encontrado! Id: " + id + " Tipo: " + ProjectDomain.class.getName()
                     );
                 });
     }
