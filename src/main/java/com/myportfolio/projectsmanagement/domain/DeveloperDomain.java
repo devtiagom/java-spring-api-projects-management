@@ -39,11 +39,11 @@ public class DeveloperDomain implements Serializable {
         this.fullName = fullName;
     }
 
-    public DeveloperPosition getPositionCode() {
+    public DeveloperPosition getPosition() {
         return DeveloperPosition.toEnum(this.positionCode);
     }
 
-    public void setPositionCode(DeveloperPosition position) {
+    public void setPosition(DeveloperPosition position) {
         this.positionCode = position.getPositionCode();
     }
 
