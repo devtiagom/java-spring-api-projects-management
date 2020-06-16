@@ -1,8 +1,8 @@
 package com.myportfolio.projectsmanagement.domain.enums;
 
 public enum ProjectLifeCycle {
-    IN_PROGRESS(1, "PROJECT_IN_PROGRESS"),
-    FINISHED(2, "PROJECT_FINISHED");
+    IN_PROGRESS(1, "Project in progress"),
+    FINISHED(2, "Project finished");
 
     private static final String INVALID_STATUS_CODE = "Código inválido: ";
 

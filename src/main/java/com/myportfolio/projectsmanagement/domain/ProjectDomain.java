@@ -24,7 +24,7 @@ public class ProjectDomain implements Serializable {
     @Column(name = "started_at", nullable = false)
     private Date startedAt;
 
-    @Column(name = "finished_at", nullable = true)
+    @Column(name = "finished_at")
     private Date finishedAt;
 
     @Column(nullable = false)
