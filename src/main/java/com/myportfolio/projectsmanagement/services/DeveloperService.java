@@ -2,7 +2,6 @@ package com.myportfolio.projectsmanagement.services;
 
 import com.myportfolio.projectsmanagement.domain.DeveloperDomain;
 import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
-import com.myportfolio.projectsmanagement.dtos.developers.DeveloperUpdateDTO;
 import com.myportfolio.projectsmanagement.repositories.DeveloperRepository;
 import com.myportfolio.projectsmanagement.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ public class DeveloperService {
         return this.developerRepository.save(fromDTO(developerDTO));
     }
 
-    public void updateDeveloper(Long id, DeveloperUpdateDTO developerDTO) {
+    public void updateDeveloper(Long id, DeveloperSaveDTO developerDTO) {
         DeveloperDomain developerFromDB = this.getOneDeveloper(id);
         if (developerFromDB != null) {
             if (developerDTO.getFullName() != null) developerFromDB.setFullName(developerDTO.getFullName());

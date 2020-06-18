@@ -12,11 +12,11 @@ public class DeveloperSaveDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @NotEmpty(message = "Preenchimento obrigatório.")
-    @Length(min = 6, max = 30, message = "O campo nome deve ter entre 6 e 30 caracteres.")
+    @NotEmpty(message = "Campo obrigatório")
+    @Length(min = 6, max = 30, message = "O campo nome completo deve ter entre 6 e 30 caracteres")
     private String fullName;
 
-    @NotNull(message = "Preenchimento obrigatório.")
+    @NotNull(message = "Campo obrigatório")
     @Min(value = 1, message = "positionCode deve ser maior que 0")
     @Max(value = 3, message = "positionCode deve ser menor que 4")
     private Integer positionCode;

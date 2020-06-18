@@ -52,8 +52,8 @@ public class ProjectController {
         return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ProjectUpdateDTO projectDTO) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody ProjectUpdateDTO projectDTO) {
         this.projectService.updateProject(id, projectDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -3,7 +3,6 @@ package com.myportfolio.projectsmanagement.controllers;
 import com.myportfolio.projectsmanagement.domain.DeveloperDomain;
 import com.myportfolio.projectsmanagement.dtos.developers.DeveloperGetDTO;
 import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
-import com.myportfolio.projectsmanagement.dtos.developers.DeveloperUpdateDTO;
 import com.myportfolio.projectsmanagement.services.DeveloperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,8 +53,8 @@ public class DeveloperController {
         return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody DeveloperUpdateDTO developerDTO) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody DeveloperSaveDTO developerDTO) {
         this.developerService.updateDeveloper(id, developerDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
