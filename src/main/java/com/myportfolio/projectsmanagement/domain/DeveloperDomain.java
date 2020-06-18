@@ -1,6 +1,7 @@
 package com.myportfolio.projectsmanagement.domain;
 
 import com.myportfolio.projectsmanagement.domain.enums.DeveloperPosition;
+import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +26,11 @@ public class DeveloperDomain implements Serializable {
     public DeveloperDomain(String fullName, DeveloperPosition position) {
         this.fullName = fullName;
         this.positionCode = position.getPositionCode();
+    }
+
+    public DeveloperDomain(DeveloperSaveDTO developerDTO) {
+        this.fullName = developerDTO.getFullName();
+        this.positionCode = developerDTO.getPosition().getPositionCode();
     }
 
     public Long getId() {

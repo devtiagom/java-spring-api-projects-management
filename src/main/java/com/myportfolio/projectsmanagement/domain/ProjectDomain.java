@@ -1,6 +1,7 @@
 package com.myportfolio.projectsmanagement.domain;
 
 import com.myportfolio.projectsmanagement.domain.enums.ProjectLifeCycle;
+import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,6 +40,12 @@ public class ProjectDomain implements Serializable {
         this();
         this.name = name;
         this.description = description;
+    }
+
+    public ProjectDomain(ProjectSaveDTO projectDTO) {
+        this();
+        this.name = projectDTO.getName();
+        this.description = projectDTO.getDescription();
     }
 
     public Long getId() {

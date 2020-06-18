@@ -34,7 +34,7 @@ public class ProjectService {
     }
 
     public ProjectDomain createNewProject(ProjectSaveDTO projectDTO) {
-        return this.projectRepository.save(formDTO(projectDTO));
+        return this.projectRepository.save(fromDTO(projectDTO));
     }
 
     public void updateProject(Long id, ProjectUpdateDTO projectDTO) {
@@ -42,7 +42,7 @@ public class ProjectService {
         if (projectFromDB != null) {
             if (projectDTO.getName() != null) projectFromDB.setName(projectDTO.getName());
             if (projectDTO.getDescription() != null) projectFromDB.setDescription(projectDTO.getDescription());
-            if (projectDTO.getClose()) projectFromDB.closeProject();
+            if (projectDTO.getClose() != null) if (projectDTO.getClose()) projectFromDB.closeProject();
             this.projectRepository.save(projectFromDB);
         }
     }
@@ -52,7 +52,7 @@ public class ProjectService {
         if (projectFromDB != null) this.projectRepository.delete(projectFromDB);
     }
 
-    private ProjectDomain formDTO(ProjectSaveDTO projectDTO) {
-        return new ProjectDomain(projectDTO.getName(), projectDTO.getDescription());
+    private ProjectDomain fromDTO(ProjectSaveDTO projectDTO) {
+        return new ProjectDomain(projectDTO);
     }
 }
