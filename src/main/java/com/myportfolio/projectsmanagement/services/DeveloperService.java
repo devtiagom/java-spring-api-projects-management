@@ -5,9 +5,10 @@ import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
 import com.myportfolio.projectsmanagement.repositories.DeveloperRepository;
 import com.myportfolio.projectsmanagement.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class DeveloperService {
@@ -19,8 +20,8 @@ public class DeveloperService {
         this.developerRepository = developerRepository;
     }
 
-    public List<DeveloperDomain> getDevelopers() {
-        return this.developerRepository.findAll();
+    public Page<DeveloperDomain> getDevelopers(Integer page, Integer size, String direction, String orderBy) {
+        return this.developerRepository.findAll(PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy));
     }
 
     public DeveloperDomain getOneDeveloper(Long id) {

@@ -31,7 +31,9 @@ public class ProjectController {
             @RequestParam(value = "direction", defaultValue = "ASC") String direction,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
     ) {
-        Page<ProjectGetDTO> projectsDTO = this.projectService.getProjects(page, size, direction, orderBy).map(ProjectGetDTO::new);
+        Page<ProjectGetDTO> projectsDTO = this.projectService
+                .getProjects(page, size, direction, orderBy)
+                .map(ProjectGetDTO::new);
         return ResponseEntity.status(HttpStatus.OK).body(projectsDTO);
     }
 
