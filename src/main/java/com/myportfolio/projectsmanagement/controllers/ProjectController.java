@@ -1,6 +1,7 @@
 package com.myportfolio.projectsmanagement.controllers;
 
 import com.myportfolio.projectsmanagement.domain.ProjectDomain;
+import com.myportfolio.projectsmanagement.dtos.developers.DeveloperGetDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectGetDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/projects")
@@ -64,5 +67,15 @@ public class ProjectController {
     public ResponseEntity<Void> destroy(@PathVariable Long id) {
         this.projectService.deleteProject(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @RequestMapping(value = "/{id}/devs", method = RequestMethod.GET)
+    public ResponseEntity<List<DeveloperGetDTO>> getProjectDevelopers(@PathVariable Long id) {
+        List<DeveloperGetDTO> projectDevelopers = this.projectService
+                .getProjectDevelopers(id)
+                .stream()
+                .map(DeveloperGetDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(projectDevelopers);
     }
 }
