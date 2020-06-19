@@ -1,5 +1,6 @@
 package com.myportfolio.projectsmanagement.repositories;
 
+import com.myportfolio.projectsmanagement.domain.DeveloperDomain;
 import com.myportfolio.projectsmanagement.domain.ProjectDeveloperDomain;
 import com.myportfolio.projectsmanagement.domain.ProjectDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,7 @@ import java.util.List;
 public interface ProjectDeveloperRepository extends JpaRepository<ProjectDeveloperDomain, Long> {
     @Transactional(readOnly=true)
     public List<ProjectDeveloperDomain> findByProject(ProjectDomain project);
+
+    @Transactional(readOnly=true)
+    public ProjectDeveloperDomain findByProjectAndDeveloper(ProjectDomain project, DeveloperDomain developer);
 }

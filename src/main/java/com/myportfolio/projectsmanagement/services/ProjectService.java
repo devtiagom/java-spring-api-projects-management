@@ -3,7 +3,6 @@ package com.myportfolio.projectsmanagement.services;
 import com.myportfolio.projectsmanagement.domain.DeveloperDomain;
 import com.myportfolio.projectsmanagement.domain.ProjectDeveloperDomain;
 import com.myportfolio.projectsmanagement.domain.ProjectDomain;
-import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
 import com.myportfolio.projectsmanagement.repositories.ProjectDeveloperRepository;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,6 +81,16 @@ public class ProjectService {
         List<DeveloperDomain> developers = projDevs.stream().map(projDev -> projDev.getDeveloper()).collect(Collectors.toList());
         if (developers.contains(developerFromDB)) return;
         this.projectDeveloperRepository.save(new ProjectDeveloperDomain(projectFromDB, developerFromDB));
+    }
+
+    public void removeDeveloperFromProject(Long projectId, Long developerId) {
+        ProjectDomain projectFromDB = this.getOneProject(projectId);
+        DeveloperDomain developerFromDB = this.developerService.getOneDeveloper(developerId);
+        List<ProjectDeveloperDomain> projDevs = this.projectDeveloperRepository.findByProject(projectFromDB);
+        List<DeveloperDomain> developers = projDevs.stream().map(projDev -> projDev.getDeveloper()).collect(Collectors.toList());
+        if (!developers.contains(developerFromDB)) return;
+        ProjectDeveloperDomain projDev = this.projectDeveloperRepository.findByProjectAndDeveloper(projectFromDB, developerFromDB);
+        this.projectDeveloperRepository.delete(projDev);
     }
 
     private ProjectDomain fromDTO(ProjectSaveDTO projectDTO) {

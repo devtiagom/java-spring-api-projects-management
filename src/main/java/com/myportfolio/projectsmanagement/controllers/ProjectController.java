@@ -3,7 +3,6 @@ package com.myportfolio.projectsmanagement.controllers;
 import com.myportfolio.projectsmanagement.domain.ProjectDomain;
 import com.myportfolio.projectsmanagement.dtos.ObjectIdDTO;
 import com.myportfolio.projectsmanagement.dtos.developers.DeveloperGetDTO;
-import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectGetDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -91,5 +89,14 @@ public class ProjectController {
     ) {
         this.projectService.addDeveloperToProject(projectId, developerIdDTO.getId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "/{projectId}/devs", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> removeDeveloperFromProject(
+            @PathVariable Long projectId,
+            @RequestBody ObjectIdDTO developerIdDTO
+    ) {
+        this.projectService.removeDeveloperFromProject(projectId, developerIdDTO.getId());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
