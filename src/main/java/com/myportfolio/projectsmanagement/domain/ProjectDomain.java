@@ -6,7 +6,9 @@ import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity @Table(name = "projects")
 public class ProjectDomain implements Serializable {
@@ -30,6 +32,9 @@ public class ProjectDomain implements Serializable {
 
     @Column(nullable = false)
     private Integer status;
+
+    @OneToMany(mappedBy = "project")
+    private Set<ProjectDeveloperDomain> projectDevelopers = new HashSet<>();
 
     public ProjectDomain() {
         this.startedAt = new Date(System.currentTimeMillis());
@@ -90,6 +95,14 @@ public class ProjectDomain implements Serializable {
 
     public void setStatus(ProjectLifeCycle status) {
         this.status = status.getStatusCode();
+    }
+
+    public Set<ProjectDeveloperDomain> getProjectDevelopers() {
+        return projectDevelopers;
+    }
+
+    public void addProjectDevelopers(ProjectDeveloperDomain projectDeveloper) {
+        this.projectDevelopers.add(projectDeveloper);
     }
 
     public ProjectLifeCycle closeProject() {

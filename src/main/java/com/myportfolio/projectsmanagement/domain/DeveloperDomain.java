@@ -5,7 +5,9 @@ import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity @Table(name = "developers")
 public class DeveloperDomain implements Serializable {
@@ -20,6 +22,9 @@ public class DeveloperDomain implements Serializable {
 
     @Column(nullable = false)
     private Integer positionCode;
+
+    @OneToMany(mappedBy = "developer")
+    private Set<ProjectDeveloperDomain> projectDevelopers = new HashSet<>();
 
     public DeveloperDomain() {}
 
@@ -53,6 +58,14 @@ public class DeveloperDomain implements Serializable {
         this.positionCode = position.getPositionCode();
     }
 
+    public Set<ProjectDeveloperDomain> getProjectDevelopers() {
+        return projectDevelopers;
+    }
+
+    public void addProjectDevelopers(ProjectDeveloperDomain projectDeveloper) {
+        this.projectDevelopers.add(projectDeveloper);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,6 +85,7 @@ public class DeveloperDomain implements Serializable {
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", positionCode=" + positionCode +
+                ", projectDevelopers=" + projectDevelopers +
                 '}';
     }
 }
