@@ -1,15 +1,19 @@
 package com.myportfolio.projectsmanagement.controllers;
 
 import com.myportfolio.projectsmanagement.domain.ProjectDomain;
+import com.myportfolio.projectsmanagement.dtos.ObjectIdDTO;
 import com.myportfolio.projectsmanagement.dtos.developers.DeveloperGetDTO;
+import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectGetDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
 import com.myportfolio.projectsmanagement.services.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -23,6 +27,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
+    @Autowired
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
@@ -69,13 +74,22 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @RequestMapping(value = "/{id}/devs", method = RequestMethod.GET)
-    public ResponseEntity<List<DeveloperGetDTO>> getProjectDevelopers(@PathVariable Long id) {
+    @RequestMapping(value = "/{projectId}/devs", method = RequestMethod.GET)
+    public ResponseEntity<List<DeveloperGetDTO>> getProjectDevelopers(@PathVariable Long projectId) {
         List<DeveloperGetDTO> projectDevelopers = this.projectService
-                .getProjectDevelopers(id)
+                .getProjectDevelopers(projectId)
                 .stream()
                 .map(DeveloperGetDTO::new)
                 .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(projectDevelopers);
+    }
+
+    @RequestMapping(value = "/{projectId}/devs", method = RequestMethod.POST)
+    public ResponseEntity<Void> addDeveloperToProject(
+            @PathVariable Long projectId,
+            @RequestBody ObjectIdDTO developerIdDTO
+    ) {
+        this.projectService.addDeveloperToProject(projectId, developerIdDTO.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

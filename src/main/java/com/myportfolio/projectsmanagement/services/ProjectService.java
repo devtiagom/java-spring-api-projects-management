@@ -3,6 +3,7 @@ package com.myportfolio.projectsmanagement.services;
 import com.myportfolio.projectsmanagement.domain.DeveloperDomain;
 import com.myportfolio.projectsmanagement.domain.ProjectDeveloperDomain;
 import com.myportfolio.projectsmanagement.domain.ProjectDomain;
+import com.myportfolio.projectsmanagement.dtos.developers.DeveloperSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectSaveDTO;
 import com.myportfolio.projectsmanagement.dtos.projects.ProjectUpdateDTO;
 import com.myportfolio.projectsmanagement.repositories.ProjectDeveloperRepository;
@@ -23,11 +24,17 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectDeveloperRepository projectDeveloperRepository;
+    private final DeveloperService developerService;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, ProjectDeveloperRepository projectDeveloperRepository) {
+    public ProjectService(
+            ProjectRepository projectRepository,
+            ProjectDeveloperRepository projectDeveloperRepository,
+            DeveloperService developerService
+    ) {
         this.projectRepository = projectRepository;
         this.projectDeveloperRepository = projectDeveloperRepository;
+        this.developerService = developerService;
     }
 
     public Page<ProjectDomain> getProjects(Integer page, Integer size, String direction, String orderBy) {
@@ -63,17 +70,22 @@ public class ProjectService {
         if (projectFromDB != null) this.projectRepository.delete(projectFromDB);
     }
 
-    private ProjectDomain fromDTO(ProjectSaveDTO projectDTO) {
-        return new ProjectDomain(projectDTO);
+    public List<DeveloperDomain> getProjectDevelopers(Long projectId) {
+        ProjectDomain projectFromDB = this.getOneProject(projectId);
+        List<ProjectDeveloperDomain> projDevs = this.projectDeveloperRepository.findByProject(projectFromDB);
+        return projDevs.stream().map(projDev -> projDev.getDeveloper()).collect(Collectors.toList());
     }
 
-    public List<DeveloperDomain> getProjectDevelopers(Long id) {
-        ProjectDomain projectFromDB = this.getOneProject(id);
-        List<DeveloperDomain> devs = new ArrayList<>();
-        if (projectFromDB != null) {
-            List<ProjectDeveloperDomain> projDevs = this.projectDeveloperRepository.findByProject(projectFromDB);
-            devs = projDevs.stream().map(projDev -> projDev.getDeveloper()).collect(Collectors.toList());
-        }
-        return devs;
+    public void addDeveloperToProject(Long projectId, Long developerId) {
+        ProjectDomain projectFromDB = this.getOneProject(projectId);
+        DeveloperDomain developerFromDB = this.developerService.getOneDeveloper(developerId);
+        List<ProjectDeveloperDomain> projDevs = this.projectDeveloperRepository.findByProject(projectFromDB);
+        List<DeveloperDomain> developers = projDevs.stream().map(projDev -> projDev.getDeveloper()).collect(Collectors.toList());
+        if (developers.contains(developerFromDB)) return;
+        this.projectDeveloperRepository.save(new ProjectDeveloperDomain(projectFromDB, developerFromDB));
+    }
+
+    private ProjectDomain fromDTO(ProjectSaveDTO projectDTO) {
+        return new ProjectDomain(projectDTO);
     }
 }
